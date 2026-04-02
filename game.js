@@ -1384,7 +1384,6 @@ function drawMushroom(x, y, frame) {
         drawPixelRect(x + 8, y + 14, 4, 2, '#808080');
     }
 }
-}
 
 function drawCoin(x, y) {
     drawPixelRect(x + 2, y, 4, 14, COLORS.coin);
