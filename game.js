@@ -1355,26 +1355,32 @@ function drawKoopaShell(x, y) {
 }
 
 function drawMushroom(x, y, frame) {
-    // Cap
-    drawPixelRect(x + 2, y, 12, 8, COLORS.mushroom);
-    drawPixelRect(x + 4, y - 2, 8, 2, COLORS.mushroom);
-    // White spots
-    drawPixelRect(x + 3, y + 1, 3, 3, '#FFF');
-    drawPixelRect(x + 10, y + 1, 3, 3, '#FFF');
-    drawPixelRect(x + 6, y + 2, 4, 2, '#FFF');
-    // Stem
-    drawPixelRect(x + 4, y + 8, 8, 8, COLORS.mushroomWhite);
-    // Eyes
-    drawPixelRect(x + 5, y + 10, 2, 3, '#000');
-    drawPixelRect(x + 9, y + 10, 2, 3, '#000');
-    // Feet
+    // Moon body (circular shape)
+    drawPixelRect(x + 2, y, 12, 16, '#C8C8C8');
+    drawPixelRect(x + 4, y - 2, 8, 2, '#C8C8C8');
+    drawPixelRect(x + 0, y + 2, 16, 12, '#C8C8C8');
+    // Moon highlight
+    drawPixelRect(x + 4, y + 2, 4, 4, '#E8E8E8');
+    // Craters
+    drawPixelRect(x + 3, y + 3, 3, 3, '#A0A0A0');
+    drawPixelRect(x + 9, y + 5, 4, 4, '#A0A0A0');
+    drawPixelRect(x + 5, y + 9, 3, 3, '#A0A0A0');
+    drawPixelRect(x + 11, y + 10, 2, 2, '#A0A0A0');
+    // Crater shadows
+    drawPixelRect(x + 4, y + 4, 1, 1, '#808080');
+    drawPixelRect(x + 10, y + 6, 1, 1, '#808080');
+    // Glow effect
+    drawPixelRect(x + 1, y + 1, 1, 1, '#FFFF80');
+    drawPixelRect(x + 14, y + 3, 1, 1, '#FFFF80');
+    // Feet animation
     if (frame === 0) {
-        drawPixelRect(x + 2, y + 14, 4, 2, '#000');
-        drawPixelRect(x + 10, y + 14, 4, 2, '#000');
+        drawPixelRect(x + 2, y + 14, 4, 2, '#808080');
+        drawPixelRect(x + 10, y + 14, 4, 2, '#808080');
     } else {
-        drawPixelRect(x + 4, y + 14, 4, 2, '#000');
-        drawPixelRect(x + 8, y + 14, 4, 2, '#000');
+        drawPixelRect(x + 4, y + 14, 4, 2, '#808080');
+        drawPixelRect(x + 8, y + 14, 4, 2, '#808080');
     }
+}
 }
 
 function drawCoin(x, y) {
