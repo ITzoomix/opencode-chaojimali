@@ -17,9 +17,12 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = SCREEN_WIDTH;
 canvas.height = SCREEN_HEIGHT;
-canvas.style.width = SCREEN_WIDTH * SCALE + 'px';
-canvas.style.height = SCREEN_HEIGHT * SCALE + 'px';
 ctx.imageSmoothingEnabled = false;
+
+// Add error handling
+window.addEventListener('error', (e) => {
+    console.error('Game error:', e.error);
+});
 
 // Audio Context
 const AudioContext = window.AudioContext || window.webkitAudioContext;
