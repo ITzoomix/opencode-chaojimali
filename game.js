@@ -773,6 +773,8 @@ class Mushroom {
         this.emerging = true;
         this.emergeTimer = 0;
         this.collected = false;
+        this.animFrame = 0;
+        this.animTimer = 0;
     }
     
     update() {
@@ -783,6 +785,7 @@ class Mushroom {
             this.y -= 0.5;
             if (this.emergeTimer >= 32) {
                 this.emerging = false;
+                this.y = this.startY;
             }
             return;
         }
@@ -810,6 +813,13 @@ class Mushroom {
         } else if (this.vx > 0 && isSolid(right, wallY)) {
             this.vx = -1;
         }
+        
+        // Animation
+        this.animTimer++;
+        if (this.animTimer > 8) {
+            this.animTimer = 0;
+            this.animFrame = (this.animFrame + 1) % 2;
+        }
     }
     
     draw() {
@@ -817,7 +827,7 @@ class Mushroom {
         const x = Math.floor(this.x - cameraX);
         const y = Math.floor(this.y);
         if (x < -16 || x > SCREEN_WIDTH + 16) return;
-        drawMushroom(x, y);
+        drawMushroom(x, y, this.animFrame);
     }
 }
 
@@ -1117,11 +1127,12 @@ function checkEntityCollisions() {
     for (let item of items) {
         if (item.collected) continue;
         
-        const dx = (mario.x + mario.width / 2) - (item.x + item.width / 2);
-        const dy = (mario.y + mario.height / 2) - (item.y + item.height / 2);
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist < 16) {
+        // AABB collision detection
+        if (mario.x < item.x + item.width &&
+            mario.x + mario.width > item.x &&
+            mario.y < item.y + item.height &&
+            mario.y + mario.height > item.y) {
+            
             if (item instanceof Mushroom) {
                 item.collected = true;
                 mario.grow();
@@ -1343,19 +1354,27 @@ function drawKoopaShell(x, y) {
     drawPixelRect(x + 6, y + 6, 4, 4, '#80D010');
 }
 
-function drawMushroom(x, y) {
+function drawMushroom(x, y, frame) {
     // Cap
-    drawPixelRect(x + 2, y, 12, 6, COLORS.mushroom);
+    drawPixelRect(x + 2, y, 12, 8, COLORS.mushroom);
     drawPixelRect(x + 4, y - 2, 8, 2, COLORS.mushroom);
-    // Spots
-    drawPixelRect(x + 4, y + 1, 3, 3, '#FFF');
-    drawPixelRect(x + 9, y + 1, 3, 3, '#FFF');
+    // White spots
+    drawPixelRect(x + 3, y + 1, 3, 3, '#FFF');
+    drawPixelRect(x + 10, y + 1, 3, 3, '#FFF');
+    drawPixelRect(x + 6, y + 2, 4, 2, '#FFF');
     // Stem
-    drawPixelRect(x + 4, y + 6, 8, 8, COLORS.mushroomWhite);
-    drawPixelRect(x + 5, y + 7, 6, 6, '#FFF');
+    drawPixelRect(x + 4, y + 8, 8, 8, COLORS.mushroomWhite);
     // Eyes
-    drawPixelRect(x + 5, y + 8, 2, 2, '#000');
-    drawPixelRect(x + 9, y + 8, 2, 2, '#000');
+    drawPixelRect(x + 5, y + 10, 2, 3, '#000');
+    drawPixelRect(x + 9, y + 10, 2, 3, '#000');
+    // Feet
+    if (frame === 0) {
+        drawPixelRect(x + 2, y + 14, 4, 2, '#000');
+        drawPixelRect(x + 10, y + 14, 4, 2, '#000');
+    } else {
+        drawPixelRect(x + 4, y + 14, 4, 2, '#000');
+        drawPixelRect(x + 8, y + 14, 4, 2, '#000');
+    }
 }
 
 function drawCoin(x, y) {
